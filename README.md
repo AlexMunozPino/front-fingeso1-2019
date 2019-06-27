@@ -1,30 +1,47 @@
-# front-fingeso-1-2019
+# [Vue Paper Dashboard](https://cristijora.github.io/vue-paper-dashboard/)
 
-> Frontend for a proposal manager web app
+> Admin dashboard based on paper dashboard UI template + vue-router
+
+This project is a vue version of [Paper-dashboard](https://www.creative-tim.com/product/paper-dashboard)
+designed for vue js.The dashboard includes vue-router
+
+Check the [Live Demo here](https://cristijora.github.io/vue-paper-dashboard).
+
+[Nuxt Version (outdated Bootstrap 3)](https://github.com/cristijora/vue-paper-dashboard-nuxt)
+![](http://i.imgur.com/3iC1hOs.gif)
+
+## Documentation
+Link to [Documentation](http://vuejs.creative-tim.com/vue-paper-dashboard/documentation/)
 
 ## Build Setup
 
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
+### install dependencies
 ```
+npm install
+```
+### serve with hot reload at localhost:8080
+```
+npm run dev
+```
+### build for production with minification
+```
+npm run build
+```
+### lint
+```
+npm run lint
+```
+## Contribution guide
+* Fork the repository
+* `npm install` or `yarn install`
+* Make changes
+* Open Pull Request
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+For detailed explanation on how things work, checkout the [guide](https://github.com/vuejs/vue-cli/blob/dev/docs/README.md)
+- [CHANGELOG](./CHANGELOG.md)
+- [version-badge](https://img.shields.io/badge/version-2.0.0-blue.svg)
+- [license-badge](https://img.shields.io/badge/license-MIT-blue.svg)
+
+## License
+
+[MIT](https://github.com/cristijora/vue-paper-dashboard/blob/master/LICENSE.md)
