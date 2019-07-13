@@ -11,11 +11,13 @@
       <div class="logo">
         <a href="#" class="simple-text">
             <div class="logo-img">
-                <img src="@/assets/img/vue-logo.png" alt="">
+                <img src="@/assets/img/symbiose-logo-72.png" alt="">
             </div>
-          {{title}}
         </a>
+        <p>{{Title}}</p>
       </div>
+
+
       <slot>
 
       </slot>
@@ -43,7 +45,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: "Paper Dashboard"
+      default: "Symbiose"
     },
     backgroundColor: {
       type: String,
