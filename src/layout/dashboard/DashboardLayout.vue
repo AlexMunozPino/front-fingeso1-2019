@@ -3,7 +3,8 @@
     <side-bar>
       <template slot="links">
         <sidebar-link to="/dashboard" name="Dashboard" icon="ti-panel"/>
-        <sidebar-link to="/stats" name="Buscar Propuesta" icon="ti-search"/>
+        <sidebar-link to="/search-proposal" name="Buscar Propuesta" icon="ti-search"/>
+        <sidebar-link to="/create-proposal" name="Crear Propuesta" icon="ti-plus"/>
         <sidebar-link to="/table-list" name="Gestionar Clientes" icon="ti-view-list-alt"/>
         <sidebar-link to="/typography" name="Gestionar Perfiles" icon="ti-text"/>
         <sidebar-link to="/icons" name="Gestionar Usuarios" icon="ti-pencil-alt2"/>

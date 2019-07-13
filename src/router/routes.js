@@ -4,7 +4,8 @@ import NotFound from "@/pages/NotFoundPage.vue";
 
 // Admin pages
 import Dashboard from "@/pages/Dashboard.vue";
-import UserProfile from "@/pages/CreateProposal.vue";
+import CreateProposal from "@/pages/CreateProposal.vue";
+import SearchProposal from "@/pages/SearchProposal.vue";
 import Notifications from "@/pages/Notifications.vue";
 import Icons from "@/pages/Icons.vue";
 import Maps from "@/pages/Maps.vue";
@@ -19,13 +20,18 @@ const routes = [
     children: [
       {
         path: "dashboard",
-        name: "dashboard",
+        name: "Dashboard",
         component: Dashboard
       },
       {
-        path: "stats",
-        name: "stats",
-        component: UserProfile
+        path: "create-proposal",
+        name: "Crear Propuesta",
+        component: CreateProposal
+      },
+      {
+        path: "search-proposal",
+        name: "Buscar Propuesta",
+        component: SearchProposal
       },
       {
         path: "notifications",

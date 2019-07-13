@@ -1,14 +1,15 @@
 <template>
   <div class="all">
-    <h2 class="title">Crear Propuesta</h2>
     <div class="data_1">
-      <input class="prop-name" type="text" placeholder="Nombre de propuesta">
-      <input class="budget" type="number" placeholder="Presupuesto">
-      <input class="tags" type="text" placeholder="Tag1, Tag2, Tag3">
+      <input class="prop-name" id="prop-name" type="text" placeholder="Nombre de propuesta">
+      <input class="budget" id="budget" type="number" placeholder="Presupuesto">
+      <input class="tags" id="tags" type="text" placeholder="Tag1, Tag2, Tag3">
+    </div>
+    <div class="select-client">
+      <p>Seleccionar Cliente:</p>
     </div>
     <div class="data_2">
-
-      <select>
+      <select id="select-client">
         <option v-for="client in clients.data" value=client>{{client.userId}}</option>
       </select>
     </div>
@@ -20,7 +21,7 @@
       <p>Subir anexos: </p>
       <input class="annexed" multiple type="file"><br>
     </div>
-    <div class="submit"><input type="submit" value="Ingresar"></div>
+    <div class="submit"><input id="submit" type="submit" value="Ingresar"></div>
   </div>
   </template>
 <script>
@@ -71,10 +72,6 @@ export default {
   .annexed{
     margin: 0 10px 10px 20px;
   }
-  .title{
-    text-align: center;
-    margin-bottom: 20px;
-  }
   .prop-name{
     margin-bottom: 10px;
   }
@@ -87,6 +84,10 @@ export default {
     margin-bottom: 10px;
   }
   .submit{
+    text-align: center;
+  }
+  .select-client{
+    margin-top: 5px;
     text-align: center;
   }
 </style>
