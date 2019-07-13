@@ -11,6 +11,7 @@ import Icons from "@/pages/Icons.vue";
 import Maps from "@/pages/Maps.vue";
 import Typography from "@/pages/Typography.vue";
 import TableList from "@/pages/TableList.vue";
+import ProposalDetail from "../pages/ProposalDetail";
 
 const routes = [
   {
@@ -31,7 +32,19 @@ const routes = [
       {
         path: "search-proposal",
         name: "Buscar Propuesta",
-        component: SearchProposal
+        component: SearchProposal,
+        children: [
+          {
+            path: '/search-proposal/:id',
+            name: "Detalle de propuesta",
+            component: ProposalDetail
+          }
+        ]
+      },
+      {
+        path: 'test',
+        name: "Detalle de propuesta",
+        component: ProposalDetail
       },
       {
         path: "notifications",

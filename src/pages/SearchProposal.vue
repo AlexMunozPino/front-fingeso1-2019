@@ -9,21 +9,41 @@
       <p>Seleccionar Cliente:</p>
     </div>
     <div class="data_2">
-    </div>
-    <div class="data_3">
-      <!-- Aquí va request para la tabla-->
+      <select id="select-client">
+        <option v-for="client in clients.data" value=client>{{client.userId}}</option>
+      </select>
     </div>
     <div class="submit"><input id="search" type="submit" value="Buscar"></div>
+    <div class="data_3">
+      <table class="table">
+        <tr>
+          <th>Propuestas</th>
+          <th>Cliente</th>
+          <th>Empresa</th>
+          <th>Fecha de inicio</th>
+          <th>Estado</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+        </tr>
+      </table>
+      <!-- Aquí va request para la tabla-->
+    </div>
   </div>
 </template>
 
 <script>
+  import axios from 'axios'
     export default {
         name: "SearchProposal",
       data(){
           return{
             proposal_name: null,
-            client: null,
+            clients: null,
             company: null,
             date: null,
             tags: [],
@@ -31,7 +51,11 @@
           }
       },
       mounted() {
-          // Aquí va el Get de las propuestas de la API
+        axios.get(`https://jsonplaceholder.typicode.com/posts/`)
+          .then(rensponse => (this.clients = rensponse))
+          .catch(e => {
+            console.log(e)
+          })
       }
     }
 </script>
@@ -49,17 +73,7 @@
     margin-bottom: 20px;
   }
   .data_3{
-    margin: 10px auto;
-    width: 50%;
-  }
-  .admin_proposal{
-    margin: 0 10px 10px 20px;
-  }
-  .economic_proposal{
-    margin: 0 10px 10px 20px;
-  }
-  .annexed{
-    margin: 0 10px 10px 20px;
+    text-align: center;
   }
   .prop-name{
     margin-bottom: 10px;
@@ -78,5 +92,9 @@
   .select-client{
     margin-top: 5px;
     text-align: center;
+  }
+  .table{
+    margin-top: 30px;
+    align-content: center;
   }
 </style>
