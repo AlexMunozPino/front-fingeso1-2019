@@ -23,7 +23,7 @@
     </div>
     <div class="submit"><input id="submit" type="submit" value="Ingresar"></div>
   </div>
-  </template>
+</template>
 <script>
 import axios from 'axios'
 export default {

@@ -14,6 +14,7 @@ import TableList from "@/pages/TableList.vue";
 import ProposalDetail from "../pages/ProposalDetail";
 import ManageClients from "../pages/ManageClients";
 import ManageUser from "../pages/ManageUser";
+import CreateClient from "../pages/CreateClient";
 import Login from "../pages/Login";
 
 const routes = [
@@ -22,6 +23,11 @@ const routes = [
     component: DashboardLayout,
     redirect: "/dashboard",
     children: [
+      {
+        path: "create-client",
+        name: "Crear Cliente",
+        component: CreateClient
+      },
       {
         path: "dashboard",
         name: "Dashboard",
