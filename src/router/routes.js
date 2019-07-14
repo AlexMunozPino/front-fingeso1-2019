@@ -12,6 +12,9 @@ import Maps from "@/pages/Maps.vue";
 import Typography from "@/pages/Typography.vue";
 import TableList from "@/pages/TableList.vue";
 import ProposalDetail from "../pages/ProposalDetail";
+import ManageClients from "../pages/ManageClients";
+import ManageUser from "../pages/ManageUser";
+import Login from "../pages/Login";
 
 const routes = [
   {
@@ -33,13 +36,16 @@ const routes = [
         path: "search-proposal",
         name: "Buscar Propuesta",
         component: SearchProposal,
-        children: [
-          {
-            path: '/search-proposal/:id',
-            name: "Detalle de propuesta",
-            component: ProposalDetail
-          }
-        ]
+      },
+      {
+        path: "manage-clients",
+        name: "Gestionar Clientes",
+        component: ManageClients,
+      },
+      {
+        path: "manage-users",
+        name: "Gestionar Usuarios",
+        component: ManageUser
       },
       {
         path: 'test',

@@ -1,5 +1,6 @@
 <template>
   <div class="all">
+    {{test}}
     <div class="data_1">
       <input class="prop-name" type="text" placeholder="Nombre de propuesta">
       <input class="budget" type="number" placeholder="Presupuesto">
@@ -31,7 +32,6 @@
           <td>1</td>
         </tr>
       </table>
-      <!-- Aquí va request para la tabla-->
     </div>
   </div>
 </template>
@@ -47,7 +47,8 @@
             company: null,
             date: null,
             tags: [],
-            proposals: null
+            proposals: null,
+            test: null
           }
       },
       mounted() {
@@ -55,7 +56,12 @@
           .then(rensponse => (this.clients = rensponse))
           .catch(e => {
             console.log(e)
-          })
+          });
+        axios.get(`http://206.189.42.243:8081/proposal/getall`)
+          .then(rensponse => (this.test = rensponse.data[0]))
+          .catch(e => {
+            console.log(e)
+          });
       }
     }
 </script>
