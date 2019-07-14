@@ -1,40 +1,33 @@
 <template>
     <div>
-      <div class="data_1">
-        <input id="name" class="name" type="text" placeholder="Nombre de cliente">
-        <input id="company" class="company" type="text" placeholder="Nombre de empresa">
-        <input id="direction" class="direction" type="text" placeholder="Dirección">
-      </div>
-      <div class="data_2">
-        <input id="number" class="number" type="text" placeholder="Número">
-        <input id="email" class="email" type="text" placeholder="Email">
-      </div>
-      <div>
-        <input type="submit" value="Crear o Modificar">
-      </div>
       <div class="data_3">
-        <table style="width:100%">
-          <tr>
+        <table class="table" style="width:100%">
+          <tr class="table_title">
             <th>Compañia</th>
             <th>Nombre</th>
-            <th>Mail</th>
-            <th>Numero</th>
-            <th>Direccion</th>
+            <th>E-Mail</th>
+            <th>Número</th>
+            <th>Dirección</th>
 
           </tr>
-          <tr v-for="client in clients">
+          <tr class="table_childs" v-for="client in clients">
             <td>{{client.nameOfCompany}}</td>
             <td>{{client.nameOfContact}}</td>
             <td>{{client.contactMail}}</td>
             <td>{{client.contactNumber}}</td>
             <td>{{client.address}}</td>
             <td><b-button>Editar</b-button></td>
-            <td><b-button @click="deleteClient(client.id)">Eliminar</b-button></td>
+            <td><b-button class="delete-client" @click="deleteClient(client.id)">Eliminar</b-button></td>
           </tr>
         </table>
       </div>
-      <create-client v-on:created-client="createdClient" v-if="creatingClient" ></create-client>
-      <b-button @click="toggleCreateClient">Nuevo cliente...</b-button>
+      <div class="end">
+        <div class="button">
+        <create-client v-on:created-client="createdClient" v-if="creatingClient" ></create-client>
+        <b-button class="new-client" v-if="btn_client" @click="toggleCreateClient">Nuevo cliente...</b-button>
+        </div>
+      </div>
+
     </div>
 </template>
 
@@ -47,7 +40,8 @@
       data(){
           return{
             clients: [],
-            creatingClient: false
+            creatingClient: false,
+            btn_client: true,
           }
       },
 
@@ -71,6 +65,7 @@
           },
 
           toggleCreateClient(){
+            this.btn_client = false;
             if (this.creatingClient){
               this.creatingClient = false;
             } else {
@@ -90,8 +85,40 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss">
   div{
     text-align: center  ;
+  }
+  .data_3{
+    margin-bottom: 15px;
+  }
+  .button{
+    align-items: center;
+    flex-grow: 1;
+  }
+  .end{
+    align-items: center;
+  }
+  .table{
+    border-collapse: separate;
+    border-color: #212120;
+  }
+  .table_title{
+    background: #212120;
+    border-radius: 25px;
+    color: #DDDDDD;
+  th{
+    transition: 0.3s;
+  }
+  th:hover{
+    color: #038e94;
+  }
+  }
+  .table_childs{
+    background: #DDDDDD;
+    transition: 0.3s
+  }
+  .table_childs:hover {
+    background-color: #b3b5b3;
   }
 </style>
