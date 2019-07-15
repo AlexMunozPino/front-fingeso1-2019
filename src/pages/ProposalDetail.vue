@@ -1,16 +1,19 @@
 <template>
     <div>
       <div>
-        <h2>{{company}}: {{proposal}}, {{date}}</h2>
+        <h2>{{client.nameOfCompany}}: {{proposal.name}}, {{date}}</h2>
       </div>
       <div>
-        <p>Cliente: {{client}}</p>
+        <p>Cliente: {{client.nameOfContact}}</p>
       </div>
       <div>
         <p>Tags: {{tag}}</p>
       </div>
       <div>
-        <p>Presupuesto: {{budget}}</p>
+        <p>Presupuesto: {{proposal.budget}}</p>
+      </div>
+      <div>
+        <p>Descripcion: {{proposal.description}}</p>
       </div>
       <div class="data_3">
         <table class="table">
@@ -20,8 +23,8 @@
             <th>Borrar</th>
           </tr>
           <tr>
-            <td>1</td>
-            <td>1</td>
+            <td v-if="admin_file_name"> Administrativo </td>
+            <td>{{admin_file_name}}</td>
             <td><input type="submit" value="Borrar"></td>
           </tr>
         </table>
@@ -45,31 +48,57 @@
 </template>
 
 <script>
-    export default {
+  import axios from 'axios'
+  import { rest_route } from "../router/routes";
+
+  export default {
         name: "ProposalDetail",
       data() {
           return {
-            tags: ['holo','holo1','asd'],
+            proposal: "",
             tag: "",
-            company: "OWO",
-            proposal: "testing",
-            date: "2019-01-21",
-            admin: null,
-            technician: null,
-            annexed: null,
-            client: "UwU",
-            budget: 100000,
+            date: "",
+            admin_file_name: "",
+            technician_file_name: "",
+            annexed_file_name: "",
+            client: "",
           }
       },
       created() {
-        let i = 0;
+        this.proposal_id = this.$route.params.id;
+        console.log(this.proposal_id);
+        /*let i = 0;
         for(i = 0; i< this.tags.length; i++){
           this.tag = this.tag.concat(this.tags[i]);
           if (i < this.tags.length - 1) {
             this.tag = this.tag.concat(", ");
           }
-        }
+        }*/
+        // Obtener la propuesta
+        console.log(rest_route+"proposal/get?proposal_id="+this.proposal_id);
+        axios.get(rest_route+"/proposal/get?proposal_id="+this.proposal_id
+        ).then((response) => {
+          this.proposal = response.data;
+          // Obtener al cliente asociado
+          this.retrieve_client();
+          // Obtener el documento administrativo
+          console.log(this.proposal);
+          for (let i=0; i<this.proposal.asociatedFiles.length; i++){
+            if (this.proposal.asociatedFiles[i].type.localeCompare("Administrativo")){
+              this.admin_file_name = this.proposal.asociatedFiles[i].fileName;
+            }
+          }
+        });
+      },
+      methods: {
+          retrieve_client(){
+            axios.get(rest_route+"/client/get?Client_id="+this.proposal.client_id
+            ).then((response) => {
+              this.client = response.data;
+            });
+          }
       }
+
     }
 </script>
 

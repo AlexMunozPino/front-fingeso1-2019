@@ -33,7 +33,7 @@
           </tr>
         </table>
       </div>
-      <create-client v-on:created-client="createdClient" v-if="creatingClient" ></create-client>
+      <create-client v-on:created-client="createdClient()" v-if="creatingClient" ></create-client>
       <b-button @click="toggleCreateClient">Nuevo cliente...</b-button>
     </div>
 </template>

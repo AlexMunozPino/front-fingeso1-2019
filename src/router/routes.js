@@ -17,6 +17,8 @@ import ManageUser from "../pages/ManageUser";
 import CreateClient from "../pages/CreateClient";
 import Login from "../pages/Login";
 
+export const rest_route = "http://localhost:8090/";
+
 const routes = [
   {
     path: "/",
@@ -54,7 +56,7 @@ const routes = [
         component: ManageUser
       },
       {
-        path: 'test',
+        path: 'test/:id',
         name: "Detalle de propuesta",
         component: ProposalDetail
       },
