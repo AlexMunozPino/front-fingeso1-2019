@@ -5,9 +5,7 @@
     <b-form-input v-model="text2" placeholder="Nombre de trabajador"></b-form-input>
     <div class="mt-2">Valor Trabajador: {{ text2 }}</div>
     <div>
-      <b-table striped hover :items="items"></b-table>
-
-      <b-table striped hover :items="items2"></b-table>
+      <b-table class="table" striped hover :items="items"></b-table>
     </div>
 
     <button type="button" class="btn btn-danger">Eliminar</button>
@@ -27,15 +25,23 @@
           { Usuario: 21, Trabajo: 'Larsen', Perfil: 'Shaw' },
           { Usuario: 89, Trabajo: 'Geneva', Perfil: 'Wilson' },
           { Usuario: 38, Trabajo: 'Jami', Perfil: 'Carney' }
-        ],
-        items2: [
-          { Banda: 'Linkin Park', Cancion: 'In the end' }
         ]
       }
     }
   }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+  .table{
+    margin-top:10px;
+    ;
+  }
+  $primary: #000000 !default;
+  $secondary: #000000 !default;
+  $success: #000000 !default;
+  $info: #000000 !default;
+  $warning: #000000 !default;
+  $danger: #f12313 !default;
+  $light: #000000 !default;
+  $dark: #000000 !default;
 </style>

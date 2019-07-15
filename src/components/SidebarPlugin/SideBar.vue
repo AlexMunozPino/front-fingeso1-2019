@@ -14,7 +14,6 @@
                 <img src="@/assets/img/symbiose-logo-72.png" alt="">
             </div>
         </a>
-        <p>{{Title}}</p>
       </div>
 
 

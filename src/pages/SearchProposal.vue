@@ -17,14 +17,14 @@
     <div class="submit"><input id="search" type="submit" value="Buscar"></div>
     <div class="data_3">
       <table class="table">
-        <tr>
+        <tr class="table_title">
           <th>Propuestas</th>
           <th>Cliente</th>
           <th>Empresa</th>
           <th>Fecha de inicio</th>
           <th>Estado</th>
         </tr>
-        <tr>
+        <tr class="table_childs" >
           <td>1</td>
           <td>1</td>
           <td>1</td>
@@ -66,7 +66,7 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss">
   .data_1{
     display: flex;
     align-items:center;
@@ -100,7 +100,29 @@
     text-align: center;
   }
   .table{
-    margin-top: 30px;
-    align-content: center;
+    border-collapse: separate;
+    border-color: #212120;
   }
+  .table_title{
+    background: #212120;
+    border-radius: 25px;
+    color: #DDDDDD;
+    th{
+      transition: 0.3s;
+    }
+    th:hover{
+      color: #038e94;
+    }
+  }
+  .table_childs{
+    background: #DDDDDD;
+    transition: 0.3s
+  }
+  .table_childs:hover {
+    background-color: #b3b5b3;
+  }
+  .table{
+
+  }
+
 </style>
