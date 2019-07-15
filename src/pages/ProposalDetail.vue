@@ -27,7 +27,7 @@
             <td> {{f.type}} </td>
             <td> {{f.fileName}}.{{f.extension}} </td>
             <td><input @click="save_file(f.file.data, f.fileName, f.extension)" type="submit" value="Descargar"></td>
-            <td><input type="submit" value="Borrar"></td>
+            <td><input @click="delete_file(f.id)" type="submit" value="Borrar"></td>
           </tr>
         </table>
       </div>
@@ -71,15 +71,6 @@
           }
       },
 
-      mounted(){
-          // Agregar la librearia para guardar archivos
-          let script = document.createElement('script');
-          script.setAttribute('src', 'https://github.com/eligrey/FileSaver.js/blob/master/dist/FileSaver.min.js');
-          // script.setAttribute('src', '../FileSaver.js');
-          script.defer = true;
-          document.head.appendChild(script);
-      },
-
       created() {
         this.proposal_id = this.$route.params.id;
         console.log(this.proposal_id);
@@ -97,12 +88,7 @@
           this.proposal = response.data;
           // Obtener los documentos
           for (let i=0; i<this.proposal.asociatedFiles.length; i++){
-            this.files.push({
-              id: this.proposal.asociatedFiles[i].type.id,
-              type: this.proposal.asociatedFiles[i].type,
-              fileName: this.proposal.asociatedFiles[i].fileName,
-              extension: this.proposal.asociatedFiles[i].extension
-            });
+            this.files.push(this.proposal.asociatedFiles[i]);
           }
           // Obtener al cliente asociado
           this.retrieve_client();
@@ -150,14 +136,18 @@
             axios.post(rest_ip+'proposal/attachFile', bodyFormData)
               .then((response) => {
                 //console.log(response.data);
-                this.files.push({
-                  id: response.id,
-                  type: response.type,
-                  fileName: response.fileName,
-                  extension: response.extension
-                });
+                this.files.push(response.data);
               });
-          }
+          },
+
+          delete_file(file_id){
+            axios.get(rest_ip+"proposal/deleteFile?proposal_id="+this.proposal.id+"&file_id="+file_id
+            ).then((response) => {
+              console.log(response.data);
+              // Eliminar el archivo de la lista local
+              this.files = this.files.filter((f) => f.id != file_id)
+            });
+          },
       }
 
     }
