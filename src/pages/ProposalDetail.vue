@@ -20,14 +20,20 @@
           <tr>
             <th>Tipo de Archivo</th>
             <th>Nombre</th>
-            <th>Borrar</th>
+            <!--<th>Descargar</th>
+            <th>Borrar</th>-->
           </tr>
-          <tr>
-            <td v-if="admin_file_name"> Administrativo </td>
-            <td>{{admin_file_name}}</td>
+          <tr v-for="f in files">
+            <td> {{f.type}} </td>
+            <td> {{f.fileName}}.{{f.extension}} </td>
+            <td><input @click="save_file(f.file.data, f.fileName, f.extension)" type="submit" value="Descargar"></td>
             <td><input type="submit" value="Borrar"></td>
           </tr>
         </table>
+      </div>
+      <div>
+        <input @change="set_input_file" type="file" id="file_input" />
+        <input @click="attach_file(proposal.id, new_file, aux)" type="submit" value="Añadir"/>
       </div>
       <div>
         <input class="prop-name" id="prop-name" type="text" placeholder="Nombre de propuesta">
@@ -41,29 +47,39 @@
           </select>
         </div>
       </div>
-      <div>
-        <input class="button" type="submit" value="Modificar">
-      </div>
     </div>
+
 </template>
 
 <script>
   import axios from 'axios'
-  import { rest_route } from "../router/routes";
-
+  import { rest_ip } from "../router/routes";
   export default {
         name: "ProposalDetail",
       data() {
           return {
+            aux: "Anexo",
             proposal: "",
             tag: "",
             date: "",
-            admin_file_name: "",
+            admin_file_name: "-",
             technician_file_name: "",
             annexed_file_name: "",
-            client: "",
+            files: [],
+            new_file: null,
+            client: ""
           }
       },
+
+      mounted(){
+          // Agregar la librearia para guardar archivos
+          let script = document.createElement('script');
+          script.setAttribute('src', 'https://github.com/eligrey/FileSaver.js/blob/master/dist/FileSaver.min.js');
+          // script.setAttribute('src', '../FileSaver.js');
+          script.defer = true;
+          document.head.appendChild(script);
+      },
+
       created() {
         this.proposal_id = this.$route.params.id;
         console.log(this.proposal_id);
@@ -75,27 +91,72 @@
           }
         }*/
         // Obtener la propuesta
-        console.log(rest_route+"proposal/get?proposal_id="+this.proposal_id);
-        axios.get(rest_route+"/proposal/get?proposal_id="+this.proposal_id
+        console.log(rest_ip+"proposal/get?proposal_id="+this.proposal_id);
+        axios.get(rest_ip+"/proposal/get?proposal_id="+this.proposal_id
         ).then((response) => {
           this.proposal = response.data;
+          // Obtener los documentos
+          for (let i=0; i<this.proposal.asociatedFiles.length; i++){
+            this.files.push({
+              id: this.proposal.asociatedFiles[i].type.id,
+              type: this.proposal.asociatedFiles[i].type,
+              fileName: this.proposal.asociatedFiles[i].fileName,
+              extension: this.proposal.asociatedFiles[i].extension
+            });
+          }
           // Obtener al cliente asociado
           this.retrieve_client();
-          // Obtener el documento administrativo
-          console.log(this.proposal);
-          for (let i=0; i<this.proposal.asociatedFiles.length; i++){
-            if (this.proposal.asociatedFiles[i].type.localeCompare("Administrativo")){
-              this.admin_file_name = this.proposal.asociatedFiles[i].fileName;
-            }
-          }
         });
       },
       methods: {
           retrieve_client(){
-            axios.get(rest_route+"/client/get?Client_id="+this.proposal.client_id
+            axios.get(rest_ip+"/client/get?Client_id="+this.proposal.client_id
             ).then((response) => {
               this.client = response.data;
             });
+          },
+
+          save_file(data, name, extension) {
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            var byteCharacters = atob(data);
+
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+              byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+
+            var blob = new Blob([byteArray]),
+              url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = name + "." + extension;
+            a.click();
+            window.URL.revokeObjectURL(url);
+          },
+
+          set_input_file(){
+            let input_file = document.getElementById("file_input");
+            this.new_file = input_file.files[0];
+          },
+
+          attach_file(proposal_id, file, fileType){
+            var bodyFormData = new FormData();
+            bodyFormData.append('id', proposal_id);
+            bodyFormData.append('file', file);
+            bodyFormData.append('fileType', fileType);
+            axios.post(rest_ip+'proposal/attachFile', bodyFormData)
+              .then((response) => {
+                //console.log(response.data);
+                this.files.push({
+                  id: response.id,
+                  type: response.type,
+                  fileName: response.fileName,
+                  extension: response.extension
+                });
+              });
           }
       }
 

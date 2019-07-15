@@ -17,7 +17,7 @@ import ManageUser from "../pages/ManageUser";
 import CreateClient from "../pages/CreateClient";
 import Login from "../pages/Login";
 
-export const rest_route = "http://localhost:8090/";
+export const rest_ip = "http://localhost:8090/";
 
 const routes = [
   {
