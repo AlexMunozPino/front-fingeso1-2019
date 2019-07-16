@@ -1,6 +1,5 @@
 <template>
   <div class="all">
-    {{test}}
     <div class="data_1">
       <input class="prop-name" type="text" placeholder="Nombre de propuesta">
       <input class="budget" type="number" placeholder="Presupuesto">
@@ -11,25 +10,26 @@
     </div>
     <div class="data_2">
       <select id="select-client">
-        <option v-for="client in clients.data" value=client>{{client.userId}}</option>
+        <option v-for="client in this.clients" value=client>{{client.id}}</option>
       </select>
     </div>
     <div class="submit"><input id="search" type="submit" value="Buscar"></div>
     <div class="data_3">
       <table class="table">
         <tr class="table_title">
-          <th>Propuestas</th>
+          <th>Nombre propuesta</th>
           <th>Cliente</th>
           <th>Empresa</th>
           <th>Fecha de inicio</th>
           <th>Estado</th>
         </tr>
-        <tr class="table_childs" >
-          <td>1</td>
-          <td>1</td>
-          <td>1</td>
-          <td>1</td>
-          <td>1</td>
+        <tr v-for="proposal in this.proposals" class="table_childs" >
+          <td >{{proposal.name}}</td>
+          <td >{{clients.filter(c => (c.id == proposal.client_id))[0].nameOfContact}}</td>
+          <td >{{clients.filter(c => (c.id == proposal.client_id))[0].nameOfCompany}}</td>
+          <td> - </td>
+          <td> - </td>
+          <td> <input @click="go_to_detail(proposal.id)" type="button" value="Ver detalle"> </td>
         </tr>
       </table>
     </div>
@@ -38,30 +38,36 @@
 
 <script>
   import axios from 'axios'
-    export default {
-        name: "SearchProposal",
+  import { rest_route } from "../router/routes";
+
+  export default {
+      name: "SearchProposal",
       data(){
           return{
-            proposal_name: null,
-            clients: null,
-            company: null,
-            date: null,
-            tags: [],
-            proposals: null,
-            test: null
+            proposals: [],
+            clients: []
           }
       },
       mounted() {
-        axios.get(`https://jsonplaceholder.typicode.com/posts/`)
-          .then(rensponse => (this.clients = rensponse))
-          .catch(e => {
-            console.log(e)
-          });
-        axios.get(`http://206.189.42.243:8081/proposal/getall`)
-          .then(rensponse => (this.test = rensponse.data[0]))
-          .catch(e => {
-            console.log(e)
-          });
+        this.retrieve_proposals();
+        this.retrieve_clients();
+      },
+      methods: {
+          go_to_detail(proposal_id){
+            window.location.href = "/#/proposal-detail/"+proposal_id;
+          },
+
+          retrieve_proposals(){
+            axios.get(rest_route+"proposal/getall")
+              .then(response => {this.proposals = response.data;})
+              .catch(e => {console.log(e)});
+          },
+
+          retrieve_clients(){
+            axios.get(rest_route+"client/getall")
+              .then(response => (this.clients = response.data))
+              .catch(e => {console.log(e)});
+          }
       }
     }
 </script>

@@ -56,7 +56,7 @@ const routes = [
         component: ManageUser
       },
       {
-        path: 'test/:id',
+        path: 'proposal-detail/:id',
         name: "Detalle de propuesta",
         component: ProposalDetail
       },
