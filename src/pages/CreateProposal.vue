@@ -32,7 +32,7 @@ export default {
     return {
       proposal_name: null,
       client_id: null,
-      tags: [],
+      tag: [],
       budget: null,
       description: null,
       nonSplittedTags: null,
@@ -61,7 +61,7 @@ export default {
 
     split_tags(){
       this.tags = this.nonSplittedTags.split(/(?:,| )+/);
-      console.log(this.tags);
+      console.log(this.tag);
     },
 
     set_admin_file(){
@@ -74,7 +74,7 @@ export default {
       axios.post('http://localhost:8090/proposal/create', {
         name: this.proposal_name,
         client_id: this.client_id,
-        tags: this.tags,
+        tags: this.tag,
         budget: this.budget,
         description: this.description
       })

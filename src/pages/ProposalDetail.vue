@@ -1,19 +1,40 @@
 <template>
     <div>
-      <div>
-        <h2>{{client.nameOfCompany}}: {{proposal.name}}, {{date}}</h2>
+      <div id="companyAndProposalDiv">
+        <h2>{{client.nameOfCompany}} : {{proposal.name}}, {{date}}</h2>
+      </div>
+      <!-- Bloque oculto para modo edicion -->
+      <div id="companyAndProposalInputDiv" style="display:none">
+        <h2>{{client.nameOfCompany}} : <input id="proposalNameInput" type="text" v-model="proposal.name"> </h2>
       </div>
       <div>
         <p>Cliente: {{client.nameOfContact}}</p>
       </div>
       <div>
-        <p>Tags: {{tag}}</p>
+        <p>Mail: <a v-bind:href="client_url_mail">{{client.contactMail}}</a>, Teléfono: {{client.contactNumber}}</p>
       </div>
-      <div>
+      <div id="tagsDiv">
+        <p>Tags: {{proposal_tags}} </p>
+      </div>
+      <!-- Bloque oculto para modo edicion -->
+      <div id="tagsInputDiv" style="display:none">
+        <p>Tags: <input id="tagsInput" type="text" v-model="proposal_tags"></p>
+      </div>
+      <div id="budgetDiv">
         <p>Presupuesto: {{proposal.budget}}</p>
       </div>
-      <div>
-        <p>Descripcion: {{proposal.description}}</p>
+      <!-- Bloque oculto para modo edicion -->
+      <div id="budgetInputDiv" style="display:none">
+        <p>Presupuesto: <input id="budgetInput" type="text" v-model="proposal.budget"></p>
+      </div>
+      <div id="descriptionDiv">
+        <p>Descripcion:</p>
+        <textarea disabled v-model="proposal.description"></textarea>
+      </div>
+      <!-- Bloque oculto para modo edicion -->
+      <div id="descriptionInputDiv" style="display:none">
+        <p>Descripcion:</p>
+        <textarea id="descriptionInput" v-model="proposal.description"></textarea>
       </div>
       <div class="data_3">
         <table class="table">
@@ -35,18 +56,15 @@
         <input @change="set_input_file" type="file" id="file_input" />
         <input @click="attach_file(proposal.id, new_file, aux)" type="submit" value="Añadir"/>
       </div>
-      <div>
-        <input class="prop-name" id="prop-name" type="text" placeholder="Nombre de propuesta">
-        <input class="budget" id="budget" type="number" placeholder="Presupuesto">
-        <input class="tags" id="tags" type="text" placeholder="Tag1, Tag2, Tag3">
+      <div id="editDiv">
+        <input @click="toggle_editable()" type="button" value="Editar">
       </div>
-      <div>
-        <div>
-          <select id="select-client">
-            <option v-for="" value=client>holi</option>
-          </select>
-        </div>
+
+      <div id="editingDiv" style="display:none">
+        <input @click="cancel_button_pressed()" type="button" value="Cancelar">
+        <input @click="save_button_pressed()" type="button" value="Guardar">
       </div>
+
     </div>
 
 </template>
@@ -59,46 +77,104 @@
       data() {
           return {
             aux: "Anexo",
+            original_proposal: "",
             proposal: "",
-            tag: "",
+            proposal_tags: "",
             date: "",
             admin_file_name: "-",
             technician_file_name: "",
             annexed_file_name: "",
             files: [],
             new_file: null,
-            client: ""
+            client: "",
+            client_url_mail: "mailto:",
+            editing: false
           }
       },
 
       created() {
         this.proposal_id = this.$route.params.id;
         console.log(this.proposal_id);
-        /*let i = 0;
-        for(i = 0; i< this.tags.length; i++){
-          this.tag = this.tag.concat(this.tags[i]);
-          if (i < this.tags.length - 1) {
-            this.tag = this.tag.concat(", ");
-          }
-        }*/
         // Obtener la propuesta
         console.log(rest_ip+"proposal/get?proposal_id="+this.proposal_id);
         axios.get(rest_ip+"/proposal/get?proposal_id="+this.proposal_id
         ).then((response) => {
           this.proposal = response.data;
+          this.original_proposal = Object.assign({}, response.data);
           // Obtener los documentos
-          for (let i=0; i<this.proposal.asociatedFiles.length; i++){
-            this.files.push(this.proposal.asociatedFiles[i]);
+          if (this.proposal.asociatedFiles != null){
+            for (let i=0; i<this.proposal.asociatedFiles.length; i++){
+              this.files.push(this.proposal.asociatedFiles[i]);
+            }
+          }
+          // Obtener los tag
+          if (this.proposal.tags != null){
+            for (let i=0; i<this.proposal.tags.length; i++){
+              if (i == this.proposal.tags.length-1){
+                this.proposal_tags += this.proposal.tags[i];
+              } else {
+                this.proposal_tags += this.proposal.tags[i] + ", ";
+              }
+            }
           }
           // Obtener al cliente asociado
           this.retrieve_client();
         });
       },
       methods: {
+          toggle_editable(){
+            if (this.editing){
+              this.editing = false;
+              document.getElementById("companyAndProposalInputDiv").style.display = "none";
+              document.getElementById("companyAndProposalDiv").style.display = "inline-block";
+              document.getElementById("tagsInputDiv").style.display = "none";
+              document.getElementById("tagsDiv").style.display = "block";
+              document.getElementById("budgetInputDiv").style.display = "none";
+              document.getElementById("budgetDiv").style.display = "block";
+              document.getElementById("descriptionInputDiv").style.display = "none";
+              document.getElementById("descriptionDiv").style.display = "block";
+              document.getElementById("editingDiv").style.display = "none";
+              document.getElementById("editDiv").style.display = "block"
+            } else {
+              this.editing = true;
+              document.getElementById("companyAndProposalInputDiv").style.display = "inline-block";
+              document.getElementById("companyAndProposalDiv").style.display = "none";
+              document.getElementById("tagsInputDiv").style.display = "block";
+              document.getElementById("tagsDiv").style.display = "none";
+              document.getElementById("budgetInputDiv").style.display = "block";
+              document.getElementById("budgetDiv").style.display = "none";
+              document.getElementById("descriptionInputDiv").style.display = "block";
+              document.getElementById("descriptionDiv").style.display = "none";
+              document.getElementById("editingDiv").style.display = "inline-block";
+              document.getElementById("editDiv").style.display = "none"
+            }
+
+          },
+
+          print(msg){
+            console.log(msg);
+          },
+
+          edit_button_pressed(){
+            this.toggle_editable();
+          },
+
+          save_button_pressed(){
+            this.update_proposal();
+            this.toggle_editable();
+          },
+
+          cancel_button_pressed(){
+            this.toggle_editable();
+            this.proposal = Object.assign({}, this.original_proposal);
+            console.log(this.original_proposal.description);
+          },
           retrieve_client(){
             axios.get(rest_ip+"/client/get?Client_id="+this.proposal.client_id
             ).then((response) => {
               this.client = response.data;
+              this.client_url_mail += this.client.contactMail;
+              console.log(this.client_url_mail);
             });
           },
 
@@ -148,6 +224,20 @@
               this.files = this.files.filter((f) => f.id != file_id)
             });
           },
+
+          update_proposal(){
+            axios.post(rest_ip+"proposal/edit", {
+              id: this.proposal.id,
+              name: this.proposal.name,
+              client_id: this.client.id,
+              tags: this.proposal_tags.split(/(?:,| )+/),
+              budget: this.proposal.budget,
+              description: this.proposal.description
+            }).then((response) => {
+              console.log(response.data);
+              alert("Datos actualizados");
+            });
+          }
       }
 
     }

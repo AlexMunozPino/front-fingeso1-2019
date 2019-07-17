@@ -38,7 +38,7 @@
 
 <script>
   import axios from 'axios'
-  import { rest_route } from "../router/routes";
+  import { rest_ip } from "../router/routes";
 
   export default {
       name: "SearchProposal",
@@ -58,13 +58,13 @@
           },
 
           retrieve_proposals(){
-            axios.get(rest_route+"proposal/getall")
+            axios.get(rest_ip+"proposal/getall")
               .then(response => {this.proposals = response.data;})
               .catch(e => {console.log(e)});
           },
 
           retrieve_clients(){
-            axios.get(rest_route+"client/getall")
+            axios.get(rest_ip+"client/getall")
               .then(response => (this.clients = response.data))
               .catch(e => {console.log(e)});
           }
