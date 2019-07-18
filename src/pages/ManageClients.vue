@@ -8,7 +8,8 @@
             <th>E-Mail</th>
             <th>Número</th>
             <th>Dirección</th>
-
+            <th></th>
+            <th></th>
           </tr>
           <tr class="table_childs" v-for="client in clients">
             <td>{{client.nameOfCompany}}</td>
@@ -16,7 +17,7 @@
             <td>{{client.contactMail}}</td>
             <td>{{client.contactNumber}}</td>
             <td>{{client.address}}</td>
-            <td><b-button>Editar</b-button></td>
+            <td><b-button @click="go_to_detail(client.id)">Detalle</b-button></td>
             <td><b-button class="delete-client" @click="deleteClient(client.id)">Eliminar</b-button></td>
           </tr>
         </table>
@@ -50,6 +51,10 @@
       },
 
       methods: {
+          go_to_detail(client_id){
+            window.location.href = "/#/client-detail/"+client_id;
+          },
+
           retrieveClients(){
             axios.get("http://localhost:8090/client/getall")
               .then((response) => {

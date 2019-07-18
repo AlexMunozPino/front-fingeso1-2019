@@ -16,6 +16,7 @@ import ManageClients from "../pages/ManageClients";
 import ManageUser from "../pages/ManageUser";
 import CreateClient from "../pages/CreateClient";
 import Login from "../pages/Login";
+import ClientDetail from "../pages/ClientDetail";
 
 export const rest_ip = "http://localhost:8090/";
 
@@ -59,6 +60,11 @@ const routes = [
         path: 'proposal-detail/:id',
         name: "Detalle de propuesta",
         component: ProposalDetail
+      },
+      {
+        path: 'client-detail/:id',
+        name: 'Detalle de cliente',
+        component: ClientDetail
       },
       {
         path: "notifications",
