@@ -48,7 +48,7 @@ export default {
   mounted() {
     document.getElementById("date_input").valueAsDate = new Date();
     this.test();
-    axios.get('http://localhost:8090/client/getall')
+    axios.get(rest_ip+'client/getall')
       .then(response => {this.clients = response.data; console.log(this.clients); this.client_id = this.clients[0].id})
       .catch(e => {
         console.log(e)
