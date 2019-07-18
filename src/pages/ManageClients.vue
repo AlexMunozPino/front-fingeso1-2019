@@ -57,7 +57,7 @@
           },
 
           retrieveClients(){
-            axios.get(rest_api+"client/getall")
+            axios.get(rest_ip+"client/getall")
               .then((response) => {
                 this.clients = response.data;
                 console.log("CLIENTES CARGADOS");
