@@ -26,7 +26,7 @@
           <td >{{clients.filter(c => (c.id == proposal.client_id))[0].nameOfContact}}</td>
           <td >{{clients.filter(c => (c.id == proposal.client_id))[0].nameOfCompany}}</td>
           <td >{{proposal.budget}} </td>
-          <td> - </td>
+          <td> {{format_date(proposal.date)}} </td>
 <!--          <td> - </td>-->
           <td> <input @click="go_to_detail(proposal.id)" type="button" value="Ver detalle"> </td>
         </tr>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+  import moment from 'moment'
   import axios from 'axios'
   import { rest_ip } from "../router/routes";
 
@@ -59,6 +60,10 @@
         document.getElementById("select-client").selectedIndex = 0;
       },
       methods: {
+          format_date(d){
+            if (d) return moment(String(d)).format('DD/MM/YYYY');
+          },
+
           go_to_detail(proposal_id){
             window.location.href = "/#/proposal-detail/"+proposal_id;
           },
@@ -67,6 +72,9 @@
             axios.get(rest_ip+"proposal/getall")
               .then(response => {
                 this.all_proposals = response.data;
+                /*for (let i=0; i<this.all_proposals.length; i++){
+                  this.all_proposals[i].date = this.format_date(this.all_proposals[i].date);
+                }*/
               })
               .catch(e => {console.log(e)});
           },

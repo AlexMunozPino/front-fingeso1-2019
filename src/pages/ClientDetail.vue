@@ -3,7 +3,7 @@
       <div id="defaultDiv" style="display:block">
         <h2>{{client.nameOfContact}}: {{client.nameOfCompany}}</h2>
         <p>Número: {{client.contactNumber}}</p>
-        <p>Email: {{client.contactMail}}</p>
+        <p>Email: <a v-bind:href="mail_to()">{{client.contactMail}}</a></p>
         <p>Dirección: {{client.address}}</p>
       </div>
       <!-- Bloque oculto para modo edicion -->
@@ -61,6 +61,10 @@
         this.retrieve_client();
       },
       methods: {
+          mail_to(){
+            return "mailto:"+this.client.contactMail;
+          },
+
           go_to_proposal_detail(proposal_id){
             window.location.href = "/#/proposal-detail/"+proposal_id;
           },

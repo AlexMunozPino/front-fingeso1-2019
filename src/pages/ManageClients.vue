@@ -35,6 +35,7 @@
 <script>
     import axios from 'axios'
     import CreateClient from "./CreateClient";
+    import {rest_ip} from "../router/routes";
     export default {
         name: "ManageClients",
       components: {CreateClient},
@@ -80,12 +81,22 @@
 
           deleteClient(id){
             console.log("ID DE CLIENTE A ELIMINAR:" + id);
-            axios.get("http://localhost:8090/client/delete?client_id="+id)
+            axios.get(rest_ip+"client/delete?client_id="+id)
               .then((response) => {
-                alert(response.data);
+                this.delete_client_proposals(id);
+
                 this.retrieveClients();
               });
+          },
+
+          delete_client_proposals(id){
+            axios.get(rest_ip+"proposal/deleteByClientId?client_id="+id)
+              .then((response) => {
+                console.log("Propuestas asociadas eliminadas");
+                alert("Cliente y propuestas asociadas eliminados");
+              })
           }
+
       }
     }
 </script>

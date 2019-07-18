@@ -1,7 +1,7 @@
 <template>
     <div>
       <div id="companyAndProposalDiv">
-        <h2>{{client.nameOfCompany}} : {{proposal.name}}, {{date}}</h2>
+        <h2>{{client.nameOfCompany}} : {{proposal.name}}, {{format_date(proposal.date)}}</h2>
       </div>
       <!-- Bloque oculto para modo edicion -->
       <div id="companyAndProposalInputDiv" style="display:none">
@@ -29,12 +29,12 @@
       </div>
       <div id="descriptionDiv">
         <p>Descripcion:</p>
-        <textarea disabled v-model="proposal.description"></textarea>
+        <textarea cols="65" disabled v-model="proposal.description"></textarea>
       </div>
       <!-- Bloque oculto para modo edicion -->
       <div id="descriptionInputDiv" style="display:none">
         <p>Descripcion:</p>
-        <textarea id="descriptionInput" v-model="proposal.description"></textarea>
+        <textarea id="descriptionInput" cols="65" v-model="proposal.description"></textarea>
       </div>
       <div class="data_3">
         <table class="table">
@@ -79,6 +79,7 @@
 <script>
   import axios from 'axios'
   import { rest_ip } from "../router/routes";
+  import moment from 'moment'
   export default {
         name: "ProposalDetail",
       data() {
@@ -87,7 +88,6 @@
             original_proposal: "",
             proposal: "",
             proposal_tags: "",
-            date: "",
             admin_file_name: "-",
             technician_file_name: "",
             annexed_file_name: "",
@@ -129,6 +129,10 @@
         });
       },
       methods: {
+          format_date(d){
+            if (d) return moment(String(d)).format('DD/MM/YYYY');
+          },
+
           update_file_type(){
             let dropdownElement = document.getElementById("fileTypeInput");
             switch(dropdownElement.selectedIndex){
