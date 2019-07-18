@@ -28,6 +28,7 @@
 </template>
 <script>
 import axios from 'axios'
+import {rest_ip} from "../router/routes";
 export default {
   data() {
     return {
@@ -84,7 +85,7 @@ export default {
     },
 
     send_data(){
-      axios.post('http://localhost:8090/proposal/create', {
+      axios.post(rest_ip+'proposal/create', {
         name: this.proposal_name,
         client_id: this.client_id,
         tags: this.tag,
@@ -108,7 +109,7 @@ export default {
       bodyFormData.append('id', proposal_id);
       bodyFormData.append('file', file);
       bodyFormData.append('fileType', fileType);
-      axios.post('http://localhost:8090/proposal/attachFile', bodyFormData)
+      axios.post(rest_ip+'proposal/attachFile', bodyFormData)
         .then((response) => {
           console.log(response.data);
         });
@@ -119,14 +120,14 @@ export default {
       bodyFormData.append('id', this.proposal_id);
       bodyFormData.append('file', this.admin_file);
       bodyFormData.append('fileType', "Administrativo");
-      axios.post('http://localhost:8090/proposal/attachFile', bodyFormData)
+      axios.post(rest_ip+'proposal/attachFile', bodyFormData)
         .then((response) => {
           console.log(response.data)
           var bodyFormData = new FormData();
           bodyFormData.append('id', this.proposal_id);
           bodyFormData.append('file', this.tech_file);
           bodyFormData.append('fileType', "Tecnico");
-          axios.post('http://localhost:8090/proposal/attachFile', bodyFormData)
+          axios.post(rest_ip+'proposal/attachFile', bodyFormData)
             .then((response) => {
               console.log(response.data);
               alert("Propuesta creada exitosamente")

@@ -57,7 +57,7 @@
           },
 
           retrieveClients(){
-            axios.get("http://localhost:8090/client/getall")
+            axios.get(rest_api+"client/getall")
               .then((response) => {
                 this.clients = response.data;
                 console.log("CLIENTES CARGADOS");

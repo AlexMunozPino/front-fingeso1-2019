@@ -11,6 +11,7 @@
 
 <script>
   import axios from 'axios'
+  import {rest_ip} from "../router/routes";
   export default {
     name: "CreateClient",
     data() {
@@ -25,7 +26,7 @@
 
     methods: {
       sendData(){
-        axios.post('http://localhost:8090/client/create', {
+        axios.post(rest_ip+'client/create', {
           nameOfCompany: this.companyName,
           nameOfContact: this.contactName,
           contactMail: this.contactMail,
