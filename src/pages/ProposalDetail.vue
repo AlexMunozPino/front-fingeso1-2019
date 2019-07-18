@@ -41,6 +41,8 @@
           <tr>
             <th>Tipo de Archivo</th>
             <th>Nombre</th>
+            <th></th>
+            <th></th>
             <!--<th>Descargar</th>
             <th>Borrar</th>-->
           </tr>
@@ -52,11 +54,16 @@
           </tr>
         </table>
       </div>
-      <div>
+      <div class="data_3" style="margin-top: 30px;">
         <input @change="set_input_file" type="file" id="file_input" />
-        <input @click="attach_file(proposal.id, new_file, aux)" type="submit" value="Añadir"/>
+        <select @change="update_file_type()" id="fileTypeInput">
+          <option> Administrativo </option>
+          <option> Técnico </option>
+          <option> Anexo </option>
+        </select>
+        <input @click="attach_file(proposal.id, new_file, file_type)" type="submit" value="Añadir"/>
       </div>
-      <div id="editDiv">
+      <div  id="editDiv">
         <input @click="toggle_editable()" type="button" value="Editar">
       </div>
 
@@ -76,7 +83,7 @@
         name: "ProposalDetail",
       data() {
           return {
-            aux: "Anexo",
+            file_type: "Administrativo",
             original_proposal: "",
             proposal: "",
             proposal_tags: "",
@@ -122,6 +129,23 @@
         });
       },
       methods: {
+          update_file_type(){
+            let dropdownElement = document.getElementById("fileTypeInput");
+            switch(dropdownElement.selectedIndex){
+              case 0:
+                this.file_type = "Administrativo";
+                break;
+              case 1:
+                this.file_type = "Tecnico";
+                break;
+              case 2:
+                this.file_type = "Anexo";
+                break;
+            }
+
+            console.log(this.file_type);
+          },
+
           toggle_editable(){
             if (this.editing){
               this.editing = false;
@@ -161,6 +185,7 @@
 
           save_button_pressed(){
             this.update_proposal();
+            this.original_proposal = Object.assign({}, this.proposal);
             this.toggle_editable();
           },
 
